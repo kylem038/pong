@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjtyvrj77lj22"]
+
+[ext_resource type="Script" path="res://Ball.cs" id="1_4ivq2"]
+[ext_resource type="Texture2D" uid="uid://dnir0b7hoehac" path="res://art/ball.png" id="1_xr0b2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dva7w"]
+size = Vector2(16, 16)
+
+[node name="Ball" type="RigidBody2D"]
+gravity_scale = 0.0
+linear_damp_mode = 1
+script = ExtResource("1_4ivq2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_xr0b2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dva7w")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="OnVisibleOnScreenNotifier2DScreenExited"]

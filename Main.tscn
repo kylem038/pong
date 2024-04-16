@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://i1d8jt8bi6bj"]
+
+[ext_resource type="PackedScene" uid="uid://cmx0w81li2bhj" path="res://Player.tscn" id="1_alpma"]
+[ext_resource type="Script" path="res://Main.cs" id="1_x6mps"]
+[ext_resource type="PackedScene" uid="uid://bxspv2kpkwgam" path="res://Opponent.tscn" id="2_3uwpw"]
+[ext_resource type="Texture2D" uid="uid://crysifdet1jlr" path="res://art/separator.png" id="3_clyka"]
+[ext_resource type="PackedScene" uid="uid://bjtyvrj77lj22" path="res://Ball.tscn" id="4_eoki3"]
+[ext_resource type="PackedScene" uid="uid://deymely83jgd2" path="res://HUD.tscn" id="6_5lpbv"]
+[ext_resource type="AudioStream" uid="uid://de55i7fjiygr4" path="res://art/Backwards.mp3" id="7_vtwm5"]
+[ext_resource type="AudioStream" uid="uid://bixiq7udpfksk" path="res://art/PingPong-onesec.mp3" id="8_kfbq6"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_2o5q3"]
+a = Vector2(-95.4, -0.000241856)
+b = Vector2(96, -0.200008)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_l5cos"]
+a = Vector2(-96, 0)
+b = Vector2(95.8, -0.199997)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_x6mps")
+BallScene = ExtResource("4_eoki3")
+
+[node name="Player" parent="." instance=ExtResource("1_alpma")]
+position = Vector2(20, 270)
+
+[node name="Opponent" parent="." instance=ExtResource("2_3uwpw")]
+position = Vector2(940, 270)
+metadata/_edit_group_ = true
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPositionPlayer" type="Marker2D" parent="."]
+position = Vector2(20, 270)
+
+[node name="StartPositionOpponent" type="Marker2D" parent="."]
+position = Vector2(940, 270)
+
+[node name="StartPositionBall" type="Marker2D" parent="."]
+position = Vector2(480, 270)
+
+[node name="Separator" type="Sprite2D" parent="."]
+position = Vector2(480, 270)
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("3_clyka")
+
+[node name="TopWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+position = Vector2(480, 0)
+rotation = 3.14159
+scale = Vector2(5, 5)
+shape = SubResource("SegmentShape2D_2o5q3")
+
+[node name="BottomWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+position = Vector2(480, 540)
+scale = Vector2(5, 5)
+shape = SubResource("SegmentShape2D_l5cos")
+
+[node name="HUD" parent="." instance=ExtResource("6_5lpbv")]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_vtwm5")
+volume_db = -8.0
+
+[node name="PingPong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_kfbq6")
+
+[connection signal="body_entered" from="Opponent" to="Opponent" method="OnBodyEntered"]
+[connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]
