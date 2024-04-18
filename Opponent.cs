@@ -53,6 +53,22 @@ public partial class Opponent : Area2D
 		);
 	}
 
+	private void AIControl(double delta)
+	{
+		var ball = GetNodeOrNull<RigidBody2D>("/root/Main/Ball");
+
+		// var velocity = Vector2.Zero;
+
+		// Position += velocity * (float)delta;
+		if (ball != null) 
+		{
+			Position = new Vector2(
+				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
+				y: Mathf.Clamp(ball.Position.Y, 0, ScreenSize.Y)
+			);
+		}
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -62,6 +78,15 @@ public partial class Opponent : Area2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		ControlPlayer(delta);
+		bool readyPlayer2 = false;
+		if (readyPlayer2)
+		{
+			ControlPlayer(delta);
+		} 
+		else 
+		{
+			AIControl(delta);
+		}
+		
 	}
 }
