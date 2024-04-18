@@ -22,18 +22,9 @@ public partial class Opponent : Area2D
 	private void OnBodyEntered(Node2D body)
 	{
 		EmitSignal(SignalName.Hit);
-		// Must be deferred as we can't change physics properties on a physics callback
-		// GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 	}
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		ScreenSize = GetViewportRect().Size;
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	private void ControlPlayer(double delta)
 	{
 		var velocity = Vector2.Zero;
 
@@ -60,5 +51,17 @@ public partial class Opponent : Area2D
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
+	}
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		ScreenSize = GetViewportRect().Size;
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		ControlPlayer(delta);
 	}
 }
