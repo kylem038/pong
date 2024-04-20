@@ -19,6 +19,11 @@ public partial class Main : Node
 		StartNewRound();
 	}
 
+	private void OnRestartGame()
+	{
+		NewGame();
+	}
+
 	private void ResetPlayerPositions()
 	{
 		// Set position of Player
