@@ -8,6 +8,7 @@ public partial class Main : Node
 	[Export]
 	private double _ballSpeedY = 185.0;
 	private double _ballSpeedX = 300.0;
+
 	private int _playerScore;
 	private int _oppententScore;
 
@@ -91,6 +92,9 @@ public partial class Main : Node
 		hud.UpdateScore(_playerScore, "player");
 		hud.UpdateScore(_oppententScore, "opponent");
 		hud.ShowMessage("Get Ready!");
+
+		// Hide Ready Player Two button
+		GetNode<Button>("HUD/PlayerTwoButton").Hide();
 
 		GetNode<AudioStreamPlayer>("Music").Play();
 

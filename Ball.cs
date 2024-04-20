@@ -10,6 +10,7 @@ public partial class Ball : RigidBody2D
 		Position = position;
 	}
 
+	// TODO: Refactor OnOpponentHit && OnPlayerHit to one OnHit and pass in who hit
 	public void OnOpponentHit()
 	{
 		// Play pingpong sound

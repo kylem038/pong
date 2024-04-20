@@ -5,6 +5,9 @@ public partial class HUD : CanvasLayer
 	[Signal]
     public delegate void StartGameEventHandler();
 
+	[Signal]
+	public delegate void EnablePlayerTwoEventHandler();
+
 	public void ShowMessage(string text)
 	{
 		var message = GetNode<Label>("Message");
@@ -50,6 +53,12 @@ public partial class HUD : CanvasLayer
 	{
 		GetNode<Button>("StartButton").Hide();
 		EmitSignal(SignalName.StartGame);
+	}
+
+	public void OnPlayerTwoPressed()
+	{
+		GetNode<Button>("PlayerTwoButton").Hide();
+		EmitSignal(SignalName.EnablePlayerTwo);
 	}
 
 	private void OnMessageTimerTimeout()

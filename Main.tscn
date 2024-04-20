@@ -26,7 +26,6 @@ position = Vector2(20, 270)
 
 [node name="Opponent" parent="." instance=ExtResource("2_3uwpw")]
 position = Vector2(940, 270)
-metadata/_edit_group_ = true
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -72,4 +71,5 @@ stream = ExtResource("8_kfbq6")
 
 [connection signal="body_entered" from="Opponent" to="Opponent" method="OnBodyEntered"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="EnablePlayerTwo" from="HUD" to="Opponent" method="OnHudEnablePlayerTwo"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
