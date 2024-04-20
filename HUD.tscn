@@ -91,4 +91,5 @@ one_shot = true
 
 [connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
 [connection signal="pressed" from="PlayerTwoButton" to="." method="OnPlayerTwoPressed"]
+[connection signal="pressed" from="RestartButton" to="." method="OnRestartButtonPressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
