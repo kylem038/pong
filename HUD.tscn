@@ -70,6 +70,7 @@ theme_override_font_sizes/font_size = 22
 text = "Ready Player 2?"
 
 [node name="RestartButton" type="Button" parent="."]
+process_mode = 3
 visible = false
 anchors_preset = 7
 anchor_left = 0.5

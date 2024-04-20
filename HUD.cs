@@ -67,7 +67,7 @@ public partial class HUD : CanvasLayer
 	public void OnRestartButtonPressed()
 	{
 		GetNode<Button>("RestartButton").Hide();
-		
+		EmitSignal(SignalName.RestartGame);
 	}
 
 	private void OnMessageTimerTimeout()

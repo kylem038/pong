@@ -22,10 +22,34 @@ public partial class Main : Node
 
 	private void OnRestartGame()
 	{
+		Ball ball = GetNodeOrNull<Ball>("Ball");
+		if (ball != null) {
+			ball.DisconnectSignals();
+			ball.QueueFree();
+		}
+		GetTree().Paused = false;
 		NewGame();
 	}
 
-	private void ResetPlayerPositions()
+	// Dont want to manage the keypress within Process
+	// So we override the input event listener here
+    public override void _Input(InputEvent @event)
+    {
+        if(@event is InputEventKey keyEvent && keyEvent.IsActionReleased("pause")) {
+			if (GetTree().Paused)
+			{
+				GetTree().Paused = false;
+				GetNode<Button>("HUD/RestartButton").Hide();
+			}
+			else if (!GetTree().Paused)
+			{
+				GetTree().Paused = true;
+				GetNode<Button>("HUD/RestartButton").Show();
+			}
+		}
+    }
+
+    private void ResetPlayerPositions()
 	{
 		// Set position of Player
 		var player = GetNode<Player>("Player");
@@ -118,13 +142,5 @@ public partial class Main : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustReleased("pause") && GetTree().Paused)
-		{
-			GetTree().Paused = false;
-		}
-		else if (Input.IsActionJustReleased("pause") && !GetTree().Paused)
-		{
-			GetTree().Paused = true;
-		}
 	}
 }
