@@ -12,6 +12,7 @@ public partial class Opponent : Area2D
 
 	// Size of the game window.
 	public Vector2 ScreenSize;
+	public bool readyPlayerTwo = false;
 
 	private float _ballPosition;
 
@@ -29,6 +30,11 @@ public partial class Opponent : Area2D
 	private void OnBodyEntered(Node2D body)
 	{
 		EmitSignal(SignalName.Hit);
+	}
+
+	private void OnHudEnablePlayerTwo()
+	{
+		readyPlayerTwo = true;
 	}
 
 	private void ControlPlayer(double delta)
@@ -116,8 +122,7 @@ public partial class Opponent : Area2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		bool readyPlayer2 = false;
-		if (readyPlayer2)
+		if (readyPlayerTwo)
 		{
 			ControlPlayer(delta);
 		}

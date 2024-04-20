@@ -93,6 +93,9 @@ public partial class Main : Node
 		hud.UpdateScore(_oppententScore, "opponent");
 		hud.ShowMessage("Get Ready!");
 
+		// Hide Ready Player Two button
+		GetNode<Button>("HUD/PlayerTwoButton").Hide();
+
 		GetNode<AudioStreamPlayer>("Music").Play();
 
 		// Start countdown timer for game start
