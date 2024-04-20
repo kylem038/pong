@@ -74,6 +74,11 @@ public partial class Opponent : Area2D
 
 		if (ball != null)
 		{
+			// Move paddle to center if the ball is moving away
+			// if (ball.LinearVelocity.X < 0) {
+			// 	return;
+			// }
+
 			float windowSize = 32;
 			float ballYPosition = ball.Position.Y;
 
