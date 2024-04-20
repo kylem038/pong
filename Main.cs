@@ -11,7 +11,6 @@ public partial class Main : Node
 
 	private int _playerScore;
 	private int _oppententScore;
-	private bool _paused = false;
 
 	private string _latestScorer = "opponent";
 
