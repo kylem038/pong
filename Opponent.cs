@@ -60,6 +60,8 @@ public partial class Opponent : Area2D
 		);
 	}
 
+	// Good reference to AI using a Prediction class
+	// https://github.com/jakesgordon/javascript-pong/blob/master/part5/pong.js#L328
 	private void AIControl(double delta)
 	{
 		var ball = GetNodeOrNull<RigidBody2D>("/root/Main/Ball");
