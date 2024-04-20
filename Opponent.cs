@@ -16,6 +16,9 @@ public partial class Opponent : Area2D
 	private float _ballPosition;
 
 	private bool upDirection = true;
+	private float adjustedBallPosition;
+
+	private float difficulty = 0.10F;
 
 	public void Start(Vector2 position)
 	{
@@ -63,20 +66,13 @@ public partial class Opponent : Area2D
 
 		if (ball != null)
 		{
-			// paddle height in px
-			// var paddleSize = GetNode<CollisionShape2D>("CollisionShape2D").Shape.GetRect().Size;
-			double paddleSize = 32;
+			float windowSize = 32;
 			float ballYPosition = ball.Position.Y;
 
-			var lower = ballYPosition - paddleSize;
-			var upper = ballYPosition + paddleSize;
+			var lower = ballYPosition - windowSize;
+			var upper = ballYPosition + windowSize;
 
 			Vector2 window = new Vector2((float)lower, (float)upper);
-
-			GD.Print("WINDOW Y: ", window.Y);
-			GD.Print("WINDOW X: ", window.X);
-			GD.Print("Ball POSITION: ", ballYPosition);
-			GD.Print("UP DIRECTION?", upDirection);
 
 			// on startup set _ballPosition once
 			if (_ballPosition == 0)
@@ -86,24 +82,25 @@ public partial class Opponent : Area2D
 
 			if (upDirection && _ballPosition > window.X) 
 			{
-				GD.Print("WE SUB 3");
-				_ballPosition -= 1f;
+				_ballPosition -= 1;
 			} 
 			else if (!upDirection && _ballPosition < window.Y)
 			{	
-				GD.Print("WE ADD 3");
-				_ballPosition += 1f;
+				_ballPosition += 1;
 			}
 			else 
 			{
-				// modifiedYPosition = 0;
-				GD.Print("TOGGLE DIRECTION OF WINDOW");
                 upDirection = !upDirection;
 			}
 
+			// Get difference between ball and drift
+			adjustedBallPosition = (ballYPosition - _ballPosition) * difficulty;
+
+			float finalBallPosition = ballYPosition + adjustedBallPosition;
+
 			Position = new Vector2(
-				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-				y: Mathf.Clamp(_ballPosition, 0, ScreenSize.Y)
+				x: Mathf.Clamp(Position.X, windowSize, ScreenSize.X - (float)windowSize),
+				y: Mathf.Clamp(finalBallPosition, windowSize, ScreenSize.Y - (float)windowSize )
 			);
 		}
 	}

@@ -26,7 +26,6 @@ position = Vector2(20, 270)
 
 [node name="Opponent" parent="." instance=ExtResource("2_3uwpw")]
 position = Vector2(940, 270)
-metadata/_edit_group_ = true
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0

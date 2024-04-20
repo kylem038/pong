@@ -8,6 +8,7 @@ public partial class Main : Node
 	[Export]
 	private double _ballSpeedY = 185.0;
 	private double _ballSpeedX = 300.0;
+
 	private int _playerScore;
 	private int _oppententScore;
 
