@@ -72,4 +72,5 @@ stream = ExtResource("8_kfbq6")
 [connection signal="body_entered" from="Opponent" to="Opponent" method="OnBodyEntered"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
 [connection signal="EnablePlayerTwo" from="HUD" to="Opponent" method="OnHudEnablePlayerTwo"]
+[connection signal="RestartGame" from="HUD" to="." method="OnRestartGame"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

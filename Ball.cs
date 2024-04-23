@@ -138,7 +138,7 @@ public partial class Ball : RigidBody2D
 		bottomWall.BodyEntered += OnWallBodyEntered;
 	}
 
-	private void DisconnectSignals()
+	public void DisconnectSignals()
 	{
 		var player = GetNode<Player>("/root/Main/Player");
 		var opponent = GetNode<Opponent>("/root/Main/Opponent");
