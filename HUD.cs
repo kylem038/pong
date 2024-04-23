@@ -27,7 +27,6 @@ public partial class HUD : CanvasLayer
 		var roundOverMessageTimer = GetNode<Timer>("MessageTimer");
 		await ToSignal(roundOverMessageTimer, Timer.SignalName.Timeout);
 
-		// TODO: This shouldnt trigger round start until after start timer finishes
 		ShowMessage("Get Ready!");
 
 		var getReadyMessageTimer = GetNode<Timer>("MessageTimer");
