@@ -3,7 +3,7 @@ using Godot;
 public partial class Opponent : Area2D
 {
 	[Signal]
-	public delegate void HitEventHandler();
+	public delegate void HitEventHandler(string body);
 
 	[Export]
 	public int Speed { get; set; } = 250; // How fast the player will move.
@@ -29,7 +29,7 @@ public partial class Opponent : Area2D
 
 	private void OnBodyEntered(Node2D body)
 	{
-		EmitSignal(SignalName.Hit);
+		EmitSignal(SignalName.Hit, "opponent");
 	}
 
 	private void OnHudEnablePlayerTwo()

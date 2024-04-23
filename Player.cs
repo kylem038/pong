@@ -4,7 +4,7 @@ using Godot;
 public partial class Player : Area2D
 {
 	[Signal]
-	public delegate void HitEventHandler();
+	public delegate void HitEventHandler(string body);
 
 	[Export]
 	public int Speed { get; set; } = 250; // How fast the player will move.
@@ -16,9 +16,7 @@ public partial class Player : Area2D
 
 	private void OnBodyEntered(Node2D body)
 	{
-		EmitSignal(SignalName.Hit);
-		// Must be deferred as we can't change physics properties on a physics callback
-		// GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+		EmitSignal(SignalName.Hit, "player");
 	}
 
 	// Called when the node enters the scene tree for the first time.
