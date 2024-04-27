@@ -122,6 +122,7 @@ public partial class Opponent : Area2D
 		// Predict the ball's future location based on velocity
 		Vector2 predictedPosition = currentPosition + currentVelocity * timeToIntercept;
 
+		// Add a bit of error
 		// predictedPosition.Y += (float)GD.RandRange(-levels[8].AiError, levels[8].AiError);
 
 		return new Vector2(
@@ -130,7 +131,7 @@ public partial class Opponent : Area2D
 		);;
 	}
 
-	private void NewAIControl(double delta) 
+	private void AIControl(double delta) 
 	{
 		var ball = GetNodeOrNull<Ball>("/root/Main/Ball");
 
@@ -174,58 +175,6 @@ public partial class Opponent : Area2D
 		}
 	}
 
-	// Good reference to AI using a Prediction class
-	// https://github.com/jakesgordon/javascript-pong/blob/master/part5/pong.js#L328
-	// private void AIControl(double delta)
-	// {
-	// 	var ball = GetNodeOrNull<RigidBody2D>("/root/Main/Ball");
-
-	// 	if (ball != null)
-	// 	{
-	// 		// Move paddle to center if the ball is moving away
-	// 		// if (ball.LinearVelocity.X < 0) {
-	// 		// 	return;
-	// 		// }
-
-	// 		float windowSize = 32;
-	// 		float ballYPosition = ball.Position.Y;
-
-	// 		var lower = ballYPosition - windowSize;
-	// 		var upper = ballYPosition + windowSize;
-
-	// 		Vector2 window = new Vector2((float)lower, (float)upper);
-
-	// 		// on startup set _ballPosition once
-	// 		if (_ballPosition == 0)
-	// 		{
-	// 			_ballPosition = ballYPosition;
-	// 		}
-
-	// 		if (upDirection && _ballPosition > window.X) 
-	// 		{
-	// 			_ballPosition -= 1;
-	// 		} 
-	// 		else if (!upDirection && _ballPosition < window.Y)
-	// 		{	
-	// 			_ballPosition += 1;
-	// 		}
-	// 		else 
-	// 		{
-    //             upDirection = !upDirection;
-	// 		}
-
-	// 		// Get difference between ball and drift
-	// 		adjustedBallPosition = (ballYPosition - _ballPosition) * difficulty;
-
-	// 		float finalBallPosition = ballYPosition + adjustedBallPosition;
-
-	// 		Position = new Vector2(
-	// 			x: Mathf.Clamp(Position.X, windowSize, ScreenSize.X - (float)windowSize),
-	// 			y: Mathf.Clamp(finalBallPosition, windowSize, ScreenSize.Y - (float)windowSize )
-	// 		);
-	// 	}
-	// }
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -241,8 +190,7 @@ public partial class Opponent : Area2D
 		}
 		else
 		{
-			NewAIControl(delta);
-			// AIControl(delta);
+			AIControl(delta);
 		}
 
 	}
