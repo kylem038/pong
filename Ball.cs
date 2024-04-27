@@ -19,7 +19,7 @@ public partial class Ball : RigidBody2D
 		var currentXVelocity = LinearVelocity.X;
 		var currentYVelocity = LinearVelocity.Y;
 
-		// get velocity of the paddle
+		// Add "spin" to the ball
 		if(body == "opponent")
 		{
 			var opponent = GetNode<Opponent>("/root/Main/Opponent");
@@ -27,22 +27,18 @@ public partial class Ball : RigidBody2D
 
 			// if ball is moving up and paddle is moving up
 			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity < 0) {
-				GD.Print("PADDLE UP & BALL UP");
 				currentXVelocity -= paddleVelocity;
 			}
 			// if ball is moving down and paddle is moving down, add velocity
 			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity > 0) {
-				GD.Print("PADDLE DOWN & BALL DOWN");
 				currentXVelocity += paddleVelocity;
 			}
 			// if ball is moving up and paddle is moving down, subtract velocity
 			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity > 0) {
-				GD.Print("PADDLE DOWN & BALL UP");
 				currentXVelocity -= paddleVelocity;
 			}
 			// if ball is moving down and paddle is moving up, subtract
 			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity < 0) {
-				GD.Print("PADDLE UP & BALL DOWN");
 				currentXVelocity += paddleVelocity;
 			}
 		}
@@ -52,23 +48,19 @@ public partial class Ball : RigidBody2D
 			float paddleVelocity = player.currentVelocity.Y;
 
 			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity < 0) {
-				GD.Print("PADDLE UP & BALL UP");
 				currentXVelocity += paddleVelocity;
 			}
 			// if ball is moving down and paddle is moving down
 			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity > 0) {
-				GD.Print("PADDLE DOWN & BALL DOWN");
 				currentXVelocity -= paddleVelocity;
 			}
 			// if ball is moving up and paddle is moving down
 			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity > 0) {
-				GD.Print("PADDLE DOWN & BALL UP");
 				float dampedVelocity = paddleVelocity;
 				currentXVelocity += dampedVelocity;
 			}
 			// if ball is moving down and paddle is moving up
 			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity < 0) {
-				GD.Print("PADDLE UP & BALL DOWN");
 				float dampedVelocity = paddleVelocity;
 				currentXVelocity -= dampedVelocity;
 			}
@@ -81,7 +73,7 @@ public partial class Ball : RigidBody2D
 		// set the velocity to the opposite X & Y
 		// Rotate just a bit to add some variance to exit vector
 		LinearVelocity = new Vector2(-currentXVelocity, currentYVelocity)
-			.Rotated((float)GD.RandRange(-Mathf.Pi / 6, Mathf.Pi / 6));;
+			.Rotated((float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4));;
 	}
 
 	// How can I not have to pass body here? It's not needed

@@ -122,15 +122,12 @@ public partial class Opponent : Area2D
 		// Predict the ball's future location based on velocity
 		Vector2 predictedPosition = currentPosition + currentVelocity * timeToIntercept;
 
-		// var closeness = Position.X - currentPosition.X;
-		// GD.Print("CLOSENESS: ", closeness);
-		// var error = levels[0].AiError * closeness;
-		// GD.Print("ERROR * CLOSENESS: ", error);
-		// prediction.Y += (float)GD.RandRange(-error, error);
+		// predictedPosition.Y += (float)GD.RandRange(-levels[8].AiError, levels[8].AiError);
 
-		// predictedPosition.Y += (float)GD.RandRange(-error, error);
-
-		return predictedPosition;
+		return new Vector2(
+			x: Mathf.Clamp(predictedPosition.X, 0, ScreenSize.X),
+			y: Mathf.Clamp(predictedPosition.Y, 0, ScreenSize.Y)
+		);;
 	}
 
 	private void NewAIControl(double delta) 
