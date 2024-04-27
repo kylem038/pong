@@ -6,7 +6,7 @@ public partial class Opponent : Area2D
 	public delegate void HitEventHandler(string body);
 
 	[Export]
-	public int Speed { get; set; } = 250; // How fast the player will move.
+	public int Speed { get; set; } = 250; // How fast the paddle will move.
 
 	public Vector2 currentVelocity;
 
@@ -123,12 +123,9 @@ public partial class Opponent : Area2D
 		Vector2 predictedPosition = currentPosition + currentVelocity * timeToIntercept;
 
 		// Add a bit of error
-		// predictedPosition.Y += (float)GD.RandRange(-levels[8].AiError, levels[8].AiError);
+		// predictedPosition.Y += (float)GD.RandRange(-levels[15].AiError, levels[15].AiError);
 
-		return new Vector2(
-			x: Mathf.Clamp(predictedPosition.X, 0, ScreenSize.X),
-			y: Mathf.Clamp(predictedPosition.Y, 0, ScreenSize.Y)
-		);;
+		return predictedPosition;
 	}
 
 	private void AIControl(double delta) 
@@ -146,11 +143,14 @@ public partial class Opponent : Area2D
 			}
 
 			Vector2 predictedLocation = PredictBallPosition(ball.Position, ball.LinearVelocity);
-			if (predictedLocation.Y < Position.Y)
+
+			// If the ball is within the paddle we move
+			// Thus we need to take into account the height of the paddle (64 / 2 = 32)
+			if (predictedLocation.Y < (Position.Y - 32))
 			{
 				MoveUp(ref velocity);
 			}
-			else if (predictedLocation.Y > Position.Y)
+			else if (predictedLocation.Y > (Position.Y + 32))
 			{
 				MoveDown(ref velocity);
 			}
