@@ -73,7 +73,7 @@ public partial class Ball : RigidBody2D
 		// set the velocity to the opposite X & Y
 		// Rotate just a bit to add some variance to exit vector
 		LinearVelocity = new Vector2(-currentXVelocity, currentYVelocity)
-			.Rotated((float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4));;
+			.Rotated((float)GD.RandRange(-Mathf.Pi / 8, Mathf.Pi / 8));;
 	}
 
 	// How can I not have to pass body here? It's not needed
