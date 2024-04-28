@@ -10,8 +10,7 @@ public partial class Ball : RigidBody2D
 		Position = position;
 	}
 
-	// TODO: Refactor OnOpponentHit && OnPlayerHit to one OnHit and pass in who hit
-	public void OnOpponentHit()
+	public void OnHit(string body)
 	{
 		// Play pingpong sound
 		GetNode<AudioStreamPlayer>("/root/Main/PingPong").Play();
@@ -20,83 +19,61 @@ public partial class Ball : RigidBody2D
 		var currentXVelocity = LinearVelocity.X;
 		var currentYVelocity = LinearVelocity.Y;
 
-		// get velocity of the paddle
-		var opponent = GetNode<Opponent>("/root/Main/Opponent");
-		var opponentPaddleVelocity = opponent.currentVelocity.Y;
-		// if ball is moving up and paddle is moving up
-		if (currentYVelocity < 0 && opponentPaddleVelocity != 0 && opponentPaddleVelocity < 0) {
-			GD.Print("PADDLE UP & BALL UP");
-			currentXVelocity -= opponentPaddleVelocity;
+		// Add "spin" to the ball
+		if(body == "opponent")
+		{
+			var opponent = GetNode<Opponent>("/root/Main/Opponent");
+			float paddleVelocity = opponent.currentVelocity.Y;
+
+			// if ball is moving up and paddle is moving up
+			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity < 0) {
+				currentXVelocity -= paddleVelocity;
+			}
+			// if ball is moving down and paddle is moving down, add velocity
+			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity > 0) {
+				currentXVelocity += paddleVelocity;
+			}
+			// if ball is moving up and paddle is moving down, subtract velocity
+			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity > 0) {
+				currentXVelocity -= paddleVelocity;
+			}
+			// if ball is moving down and paddle is moving up, subtract
+			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity < 0) {
+				currentXVelocity += paddleVelocity;
+			}
 		}
-		// if ball is moving down and paddle is moving down, add velocity
-		if (currentYVelocity > 0 && opponentPaddleVelocity != 0 && opponentPaddleVelocity > 0) {
-			GD.Print("PADDLE DOWN & BALL DOWN");
-			currentXVelocity += opponentPaddleVelocity;
-		}
-		// if ball is moving up and paddle is moving down, subtract velocity
-		if (currentYVelocity < 0 && opponentPaddleVelocity != 0 && opponentPaddleVelocity > 0) {
-			GD.Print("PADDLE DOWN & BALL UP");
-			float dampedVelocity = opponentPaddleVelocity;
-			currentXVelocity -= dampedVelocity;
-		}
-		// if ball is moving down and paddle is moving up, subtract
-		if (currentYVelocity > 0 && opponentPaddleVelocity != 0 && opponentPaddleVelocity < 0) {
-			GD.Print("PADDLE UP & BALL DOWN");
-			float dampedVelocity = opponentPaddleVelocity;
-			currentXVelocity += dampedVelocity;
+		else
+		{
+			var player = GetNode<Player>("/root/Main/Player");
+			float paddleVelocity = player.currentVelocity.Y;
+
+			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity < 0) {
+				currentXVelocity += paddleVelocity;
+			}
+			// if ball is moving down and paddle is moving down
+			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity > 0) {
+				currentXVelocity -= paddleVelocity;
+			}
+			// if ball is moving up and paddle is moving down
+			if (currentYVelocity < 0 && paddleVelocity != 0 && paddleVelocity > 0) {
+				float dampedVelocity = paddleVelocity;
+				currentXVelocity += dampedVelocity;
+			}
+			// if ball is moving down and paddle is moving up
+			if (currentYVelocity > 0 && paddleVelocity != 0 && paddleVelocity < 0) {
+				float dampedVelocity = paddleVelocity;
+				currentXVelocity -= dampedVelocity;
+			}
 		}
 
 		// Prevent ball from moving TOO fast OR slow
-		currentXVelocity = Mathf.Clamp(currentXVelocity, 275, 600);
+		currentXVelocity = body == "opponent" ? 
+			Mathf.Clamp(currentXVelocity, 275, 600) : Mathf.Clamp(currentXVelocity, -600, -275);
 
 		// set the velocity to the opposite X & Y
 		// Rotate just a bit to add some variance to exit vector
 		LinearVelocity = new Vector2(-currentXVelocity, currentYVelocity)
-			.Rotated((float)GD.RandRange(-Mathf.Pi / 6, Mathf.Pi / 6));;
-	}
-
-	public void OnPlayerHit()
-	{
-		// Play pingpong sound
-		GetNode<AudioStreamPlayer>("/root/Main/PingPong").Play();
-
-		// get current velocity
-		var currentXVelocity = LinearVelocity.X;
-		var currentYVelocity = LinearVelocity.Y;
-
-		// get velocity of the paddle
-		var player = GetNode<Player>("/root/Main/Player");
-		var playerPaddleVelocity = player.currentVelocity.Y;
-		// if ball is moving up and paddle is moving up
-		if (currentYVelocity < 0 && playerPaddleVelocity != 0 && playerPaddleVelocity < 0) {
-			GD.Print("PADDLE UP & BALL UP");
-			currentXVelocity += playerPaddleVelocity;
-		}
-		// if ball is moving down and paddle is moving down
-		if (currentYVelocity > 0 && playerPaddleVelocity != 0 && playerPaddleVelocity > 0) {
-			GD.Print("PADDLE DOWN & BALL DOWN");
-			currentXVelocity -= playerPaddleVelocity;
-		}
-		// if ball is moving up and paddle is moving down
-		if (currentYVelocity < 0 && playerPaddleVelocity != 0 && playerPaddleVelocity > 0) {
-			GD.Print("PADDLE DOWN & BALL UP");
-			float dampedVelocity = playerPaddleVelocity;
-			currentXVelocity += dampedVelocity;
-		}
-		// if ball is moving down and paddle is moving up
-		if (currentYVelocity > 0 && playerPaddleVelocity != 0 && playerPaddleVelocity < 0) {
-			GD.Print("PADDLE UP & BALL DOWN");
-			float dampedVelocity = playerPaddleVelocity;
-			currentXVelocity -= dampedVelocity;
-		}
-
-		// Prevent ball from moving TOO fast OR slow
-		currentXVelocity = Mathf.Clamp(currentXVelocity, -600, -275);
-
-		// set the velocity to the opposite X & Y
-		// Rotate just a bit to add some variance to exit vector
-		LinearVelocity = new Vector2(-currentXVelocity, currentYVelocity)
-			.Rotated((float)GD.RandRange(-Mathf.Pi / 6, Mathf.Pi / 6));
+			.Rotated((float)GD.RandRange(-Mathf.Pi / 8, Mathf.Pi / 8));;
 	}
 
 	// How can I not have to pass body here? It's not needed
@@ -132,8 +109,8 @@ public partial class Ball : RigidBody2D
 		var opponent = GetNode<Opponent>("/root/Main/Opponent");
 		var topWall = GetNode<Area2D>("/root/Main/TopWall");
 		var bottomWall = GetNode<Area2D>("/root/Main/BottomWall");
-		player.Hit += OnPlayerHit;
-		opponent.Hit += OnOpponentHit;
+		player.Hit += OnHit;
+		opponent.Hit += OnHit;
 		topWall.BodyEntered += OnWallBodyEntered;
 		bottomWall.BodyEntered += OnWallBodyEntered;
 	}
@@ -144,8 +121,8 @@ public partial class Ball : RigidBody2D
 		var opponent = GetNode<Opponent>("/root/Main/Opponent");
 		var topWall = GetNode<Area2D>("/root/Main/TopWall");
 		var bottomWall = GetNode<Area2D>("/root/Main/BottomWall");
-		player.Hit -= OnPlayerHit;
-		opponent.Hit -= OnOpponentHit;
+		player.Hit -= OnHit;
+		opponent.Hit -= OnHit;
 		topWall.BodyEntered -= OnWallBodyEntered;
 		bottomWall.BodyEntered -= OnWallBodyEntered;
 	}
